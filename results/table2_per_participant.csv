@@ -1,0 +1,31 @@
+encoder,source,aug,ema,lookahead,checkpoint,decoder,P0,P1,P2,P3,P4,P5,P6,P7,mean,sd
+SplashNet,released,-,n/r,0.1 s,as released,greedy,46.52,49.83,34.45,44.84,49.72,38.79,49.89,44.39,44.80,5.63
+SplashNet,released,-,n/r,0.1 s,as released,beam_wiki,38.02,41.08,26.02,36.13,40.43,23.85,44.77,35.84,35.77,7.30
+SplashNet,released,-,n/r,0.1 s,as released,beam_ks,35.63,38.14,23.17,33.83,38.67,21.92,42.08,33.20,33.33,7.24
+SplashNet,retrained,-,-,0.1 s,best ep54,greedy,49.61,53.47,36.98,48.37,49.78,32.77,53.17,50.42,46.82,7.66
+SplashNet,retrained,-,-,0.1 s,best ep54,beam_wiki,42.96,44.22,29.11,40.09,40.43,21.12,47.84,41.90,38.46,8.85
+SplashNet,retrained,-,-,0.1 s,best ep54,beam_ks,40.84,42.26,27.02,38.48,38.75,18.04,45.39,40.25,36.38,9.14
+SplashNet,retrained,aug,-,0.1 s,best ep123,greedy,47.13,50.79,34.16,45.15,49.28,36.38,49.47,45.21,44.70,6.18
+SplashNet,retrained,aug,-,0.1 s,best ep123,beam_wiki,40.16,44.05,26.31,36.20,40.64,22.89,44.22,36.43,36.36,7.89
+SplashNet,retrained,aug,-,0.1 s,best ep123,beam_ks,38.04,41.95,23.33,34.05,37.81,20.71,42.07,33.60,33.95,8.02
+SplashNet,retrained,-,ema,0.1 s,best ep63,greedy,48.01,50.27,34.76,44.65,49.59,32.20,50.39,47.69,44.70,7.19
+SplashNet,retrained,-,ema,0.1 s,best ep63,beam_wiki,39.85,40.95,25.28,36.53,40.80,20.38,44.92,39.87,36.07,8.59
+SplashNet,retrained,-,ema,0.1 s,best ep63,beam_ks,38.00,38.86,23.14,33.82,38.29,18.33,42.65,37.39,33.81,8.52
+SplashNet,retrained,aug,ema,0.1 s,best ep76,greedy,47.92,49.88,33.62,43.97,49.58,32.03,49.63,46.41,44.13,7.26
+SplashNet,retrained,aug,ema,0.1 s,best ep76,beam_wiki,41.02,41.93,25.50,35.76,40.30,19.14,45.00,37.99,35.83,8.93
+SplashNet,retrained,aug,ema,0.1 s,best ep76,beam_ks,38.58,38.70,22.26,33.02,37.23,17.03,41.36,35.03,32.90,8.67
+Conformer,retrained,-,-,session,best ep36,greedy,46.73,47.42,35.41,36.54,44.07,29.89,43.27,47.74,41.38,6.63
+Conformer,retrained,-,-,session,best ep36,beam_wiki,37.99,43.36,25.90,26.70,33.29,16.12,36.10,41.34,32.60,9.14
+Conformer,retrained,-,-,session,best ep36,beam_ks,36.30,41.41,23.86,23.96,31.88,14.52,34.19,39.50,30.70,9.19
+Conformer,retrained,aug,-,session,best ep65,greedy,44.95,50.06,32.60,41.92,48.60,25.64,44.65,42.11,41.32,8.25
+Conformer,retrained,aug,-,session,best ep65,beam_wiki,36.18,45.06,22.06,34.06,40.71,12.16,38.63,33.65,32.81,10.70
+Conformer,retrained,aug,-,session,best ep65,beam_ks,33.59,43.79,21.14,33.27,38.43,10.02,36.57,32.58,31.17,10.70
+Conformer,retrained,-,ema,session,best ep42,greedy,43.66,48.47,31.67,38.26,45.75,28.94,42.36,37.66,39.60,6.79
+Conformer,retrained,-,ema,session,best ep42,beam_wiki,35.72,43.51,23.54,28.89,36.34,14.89,37.27,28.58,31.09,9.04
+Conformer,retrained,-,ema,session,best ep42,beam_ks,34.18,42.35,21.45,25.79,33.37,12.44,35.18,27.09,28.98,9.32
+Conformer,retrained,aug,ema,session,best ep48,greedy,48.54,50.20,31.05,36.10,44.06,29.66,40.65,37.32,39.70,7.58
+Conformer,retrained,aug,ema,session,best ep48,beam_wiki,39.78,43.49,20.81,27.50,35.36,13.95,33.84,27.31,30.25,9.83
+Conformer,retrained,aug,ema,session,best ep48,beam_ks,38.33,42.26,19.73,24.78,32.78,13.23,31.45,25.61,28.52,9.60
+Conformer,retrained,aug,ema,0.62 s (windowed),best ep48,greedy,43.21,46.12,28.68,37.71,44.29,28.69,39.26,36.26,38.03,6.66
+Conformer,retrained,aug,ema,0.62 s (windowed),best ep48,beam_wiki,36.07,39.76,20.40,30.54,36.72,15.51,33.22,29.12,30.17,8.37
+Conformer,retrained,aug,ema,0.62 s (windowed),best ep48,beam_ks,33.98,38.78,18.55,28.74,34.64,14.50,31.37,27.29,28.48,8.26

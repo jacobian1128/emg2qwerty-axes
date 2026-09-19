@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.egg-info/
+*/data/
+*/logs/
+*/lightning_logs/
+*/outputs/
+*/multirun/
+*.ckpt
+*.arpa
+lm/bins/*.txt
+out/
+.DS_Store

@@ -1,0 +1,12 @@
+# @package _global_
+user: valu0
+dataset:
+  train:
+  - user: 41530403
+    session: 2021-07-25-1627238654-keystrokes-dca-study@1-ed5d21d5-b468-4733-88c9-2dda42b84548
+  val:
+  - user: 41530403
+    session: 2021-07-25-1627238654-keystrokes-dca-study@1-ed5d21d5-b468-4733-88c9-2dda42b84548
+  test:
+  - user: 41530403
+    session: 2021-07-25-1627238654-keystrokes-dca-study@1-ed5d21d5-b468-4733-88c9-2dda42b84548

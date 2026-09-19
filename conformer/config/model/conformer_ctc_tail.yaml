@@ -1,0 +1,14 @@
+# @package _global_
+# Tail-aligned streaming eval of an ACAUSAL checkpoint: bidirectional attention
+# within a window that ends at the emission block; stream lookahead <= 96 ms.
+module:
+  _target_: emg2qwerty.conformer.TailStreamConformerModule
+  in_features: 528
+  mlp_features: [384]
+  block_channels: [24, 24, 24, 24]
+  kernel_width: 31
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]

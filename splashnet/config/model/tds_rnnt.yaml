@@ -1,0 +1,20 @@
+# @package _global_
+module:
+  _target_: emg2qwerty.lightning.TDSTransducerModule
+  in_features: 96
+  mlp_features: [528]
+  block_channels: [24, 24, 48, 48]
+  kernel_width: 32
+  share_hand_weights: True
+  spec_norm: 'RollingTimeNorm'
+  pred_embed_dim: 256
+  pred_dim: 512
+  pred_layers: 1
+  joiner_dim: 384
+  warm_start_ckpt: null
+  train_head_only: False
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 32000
+  padding: [1800, 200]

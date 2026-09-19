@@ -1,0 +1,59 @@
+# @package _global_
+# E3 = E2 + aug2: upstream 기본 스택 + 우리 증강 4종 (정수 회전은 FractionalBandRotation이 대체)
+to_tensor:
+  _target_: emg2qwerty.transforms.ToTensor
+  fields: [emg_left, emg_right]
+
+frac_rotation:
+  _target_: emg2qwerty.transforms.ForEach
+  transform:
+    _target_: emg2qwerty.transforms.FractionalBandRotation
+    max_offset: 1.5
+
+resample_warp:
+  _target_: emg2qwerty.transforms.RandomResampleWarp
+  max_factor: 0.1
+
+magnitude_warp:
+  _target_: emg2qwerty.transforms.MagnitudeWarp
+  sigma: 0.2
+  knots: 4
+
+gain_jitter:
+  _target_: emg2qwerty.transforms.ForEach
+  transform:
+    _target_: emg2qwerty.transforms.PerChannelGainJitter
+    sigma: 0.2
+
+temporal_jitter:
+  _target_: emg2qwerty.transforms.TemporalAlignmentJitter
+  max_offset: 120
+
+logspec:
+  _target_: emg2qwerty.transforms.LogSpectrogram
+  n_fft: 64
+  hop_length: 16
+
+specaug:
+  _target_: emg2qwerty.transforms.SpecAugment
+  n_time_masks: 3
+  time_mask_param: 25
+  n_freq_masks: 2
+  freq_mask_param: 4
+
+transforms:
+  train:
+    - ${to_tensor}
+    - ${resample_warp}
+    - ${magnitude_warp}
+    - ${frac_rotation}
+    - ${gain_jitter}
+    - ${temporal_jitter}
+    - ${logspec}
+    - ${specaug}
+
+  val:
+    - ${to_tensor}
+    - ${logspec}
+
+  test: ${transforms.val}

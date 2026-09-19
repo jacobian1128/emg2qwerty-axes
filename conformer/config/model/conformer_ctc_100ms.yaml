@@ -1,0 +1,14 @@
+# @package _global_
+# 100 ms protocol-matched Conformer: banded attention (4 frames/layer x 3 = 96 ms),
+# causal convolutions, window padding identical to the benchmark convention.
+module:
+  _target_: emg2qwerty.conformer.LookaheadConformerModule
+  in_features: 528
+  mlp_features: [384]
+  block_channels: [24, 24, 24, 24]
+  kernel_width: 31
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]  # 900 ms past, 100 ms future — benchmark convention

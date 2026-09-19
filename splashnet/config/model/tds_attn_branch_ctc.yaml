@@ -1,0 +1,20 @@
+# @package _global_
+# Run D: released SplashNet + parallel zero-init attention branches (branch-only tuning)
+module:
+  _target_: emg2qwerty.lightning.TDSAttnBranchCTCModule
+  in_features: 96
+  mlp_features: [528]
+  block_channels: [24, 24, 48, 48]
+  kernel_width: 32
+  share_hand_weights: True
+  spec_norm: 'RollingTimeNorm'
+  branch_d_model: 128
+  branch_nhead: 8
+  warm_start_ckpt: null   # absolute path to released splashnet.ckpt
+  train_branch_only: False
+  mixing_mode: branch
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
