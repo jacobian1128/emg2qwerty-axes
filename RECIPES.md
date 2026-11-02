@@ -53,6 +53,25 @@ python -m emg2qwerty.train --config-name base_ema $COMMON hydra.run.dir=runs/con
 python -m emg2qwerty.train --config-name base_ema $COMMON transforms=aug2 hydra.run.dir=runs/conformer_aug_ema
 ```
 
+### Run-to-run variation (two further runs of the full recipe)
+
+Same recipe as the full-recipe run above, with the log-spectrogram and SpecAugment
+computed on the GPU instead of in the data-loader workers (`emg2qwerty/gpu_frontend.py`;
+it agrees with the CPU transform to about 5e-7 and adds no parameters, so checkpoints are
+interchangeable). Seed 1501 repeats the paper run on this input path; seed 1502 is a new seed.
+Launchers as executed: `recipes/conformer/as_run/launch_e3g_1501.sh`, `launch_e3g_1502.sh`.
+
+```bash
+# run 2 (best ep14 -> 40.42 / - / 28.60), run 3 with seed=1502 (best ep35 -> 39.21 / - / 27.99)
+python -m emg2qwerty.train --config-name base_ema model=conformer_ctc_gpufe transforms=aug2_raw \
+    user=generic_xval seed=1501 dataset.root=$PWD/../splashnet/data batch_size=32 num_workers=4 \
+    trainer.accelerator=gpu trainer.devices=1 trainer.max_epochs=150 hydra.run.dir=runs/conformer_aug_ema_gpufe_s1501
+```
+
+Their checkpoints are evaluated like the others (`eval/as_run/e3g_eval_chain*.sh`, greedy and
+Beam+KS); per-participant results are in `results/runs_full_recipe_per_participant.csv`.
+These two checkpoints are not part of the Release.
+
 ## Decoding (all rows)
 
 Every checkpoint is decoded three ways with `eval/eval_8users.sh`: greedy, beam
@@ -84,6 +103,21 @@ comparison reported there.
 `conformer_ctc_100ms`), `launch_e1c_150.sh`, and `launch_e3ft.sh` (fine-tuning
 the acausal checkpoint under a 96-ms band mask). All stalled near validation CER
 70 and were stopped; they are kept for the record.
+
+## Transplantation diagnostic (supporting analyses)
+
+Uses the benchmark's released TDS checkpoints (`generic.ckpt`, `personalized-finetuned/user{0..7}.ckpt`)
+and the benchmark's default `tds_conv_ctc` model, run from the `conformer/` tree.
+
+```bash
+for n in 0 1 2 3 4 5 6 7; do
+  python eval/transplant.py --generic models/generic.ckpt \
+      --personalized-dir models/personalized-finetuned --user user$n --out-dir out/transplant
+done
+# evaluate each hybrid on its own participant, one output directory per cell:
+#   eval/as_run/tp_regreedy.sh (greedy), eval/as_run/tp_reks.sh (beam + keystroke 6-gram)
+python eval/transplant_stats.py      # recovery, bootstrap CI, exact Wilcoxon
+```
 
 ## Language models (`lm/`)
 

@@ -389,11 +389,17 @@ class ConformerModule(pl.LightningModule):
         optimizer: DictConfig,
         lr_scheduler: DictConfig,
         decoder: DictConfig,
+        frontend: Optional[DictConfig] = None,
     ) -> None:
         super().__init__()
         self.save_hyperparameters()
 
         num_features = self.NUM_BANDS * mlp_features[-1]
+
+        # Optional GPU front-end (log-spectrogram + SpecAugment on the batch). Applied in
+        # _step only when the batch is raw EMG (4-D); spectrogram batches (5-D) pass through,
+        # so checkpoints work with either the CPU or the GPU transform path.
+        self.frontend = instantiate(frontend) if frontend is not None else None
 
         # Model
         # inputs: (T, N, bands=2, electrode_channels=16, freq)
@@ -461,7 +467,9 @@ class ConformerModule(pl.LightningModule):
         input_lengths = batch["input_lengths"]
         target_lengths = batch["target_lengths"]
         N = len(input_lengths)  # batch_size
-        
+
+        if self.frontend is not None and inputs.dim() == 4:  # raw EMG (T, N, bands, channels)
+            inputs, input_lengths = self.frontend(inputs, input_lengths, self.training)
 
         emissions = self.forward(inputs, input_lengths) 
         # print("Any NaN in output?", torch.isnan(emissions).any())

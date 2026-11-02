@@ -9,7 +9,12 @@ EMA weight averaging, decoded by beam search under a keystroke character 6-gram
 built from the benchmark's own training keylogs, reaches **28.52 % zero-shot CER**
 on the eight test participants (published state of the art 35.67 %). The same
 checkpoint decoded with a windowed encoder whose future input is bounded to
-0.62 s gives 28.48 %.
+0.62 s gives 28.48 %. Two further runs of the full recipe give 28.60 % and 27.99 %
+(three-run mean 28.37 ± 0.33 %).
+
+v1.1 adds the material for the run-to-run variation table and the statistics of the
+transplantation diagnostic: the GPU front-end used by the two extra runs, their launchers
+and evaluation scripts, the transplantation script, and the per-participant results of both.
 
 ## Layout
 
@@ -19,8 +24,8 @@ checkpoint decoded with a windowed encoder whose future input is bounded to
 | `splashnet/` | emg2qwerty fork with the SplashNet architecture and our training-recipe changes |
 | `recipes/` | launcher scripts of every training run in the design-space table, Table 2 (`RECIPES.md` explains them) |
 | `lm/` | keystroke-corpus extraction, LM builders, and the four 6-gram binaries used in the paper |
-| `eval/` | 8-participant evaluator, validation delay sweep, windowed-encoder checks, FLOP count, paired statistics |
-| `results/` | per-participant CER for every Table 2 cell and every control |
+| `eval/` | 8-participant evaluator, validation delay sweep, windowed-encoder checks, FLOP count, paired statistics, transplantation diagnostic and its statistics |
+| `results/` | per-participant CER for every Table 2 cell, every control, the three full-recipe Conformer runs, and the transplantation diagnostic |
 | `checkpoints/` | table and checksums of the eight released checkpoints (files on the Release page) |
 | `paper_figures/` | scripts of the pipeline, decoder-ladder and per-participant figures |
 
@@ -53,7 +58,8 @@ The un-windowed rows run on CPU; the windowed row recomputes a 5-s window every
 `PAR=3` evaluates three participants at once.
 
 Paired statistics: `python eval/paired_stats.py` on two per-participant vectors
-(bootstrap CI, exact Wilcoxon signed-rank).
+(bootstrap CI, exact Wilcoxon signed-rank). `python eval/transplant_stats.py`
+reproduces the statistics of the transplantation diagnostic from `results/`.
 
 ## Training
 

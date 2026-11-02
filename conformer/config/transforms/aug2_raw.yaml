@@ -1,0 +1,46 @@
+# @package _global_
+# aug2 with LogSpectrogram + SpecAugment removed from the CPU workers: the batch leaves the
+# loader as raw EMG (T, bands, channels) and the GPU front-end (model=conformer_ctc_gpufe)
+# computes the same log-spectrogram and SpecAugment on the GPU. Raw-signal augmentations unchanged.
+to_tensor:
+  _target_: emg2qwerty.transforms.ToTensor
+  fields: [emg_left, emg_right]
+
+frac_rotation:
+  _target_: emg2qwerty.transforms.ForEach
+  transform:
+    _target_: emg2qwerty.transforms.FractionalBandRotation
+    max_offset: 1.5
+
+resample_warp:
+  _target_: emg2qwerty.transforms.RandomResampleWarp
+  max_factor: 0.1
+
+magnitude_warp:
+  _target_: emg2qwerty.transforms.MagnitudeWarp
+  sigma: 0.2
+  knots: 4
+
+gain_jitter:
+  _target_: emg2qwerty.transforms.ForEach
+  transform:
+    _target_: emg2qwerty.transforms.PerChannelGainJitter
+    sigma: 0.2
+
+temporal_jitter:
+  _target_: emg2qwerty.transforms.TemporalAlignmentJitter
+  max_offset: 120
+
+transforms:
+  train:
+    - ${to_tensor}
+    - ${resample_warp}
+    - ${magnitude_warp}
+    - ${frac_rotation}
+    - ${gain_jitter}
+    - ${temporal_jitter}
+
+  val:
+    - ${to_tensor}
+
+  test: ${transforms.val}

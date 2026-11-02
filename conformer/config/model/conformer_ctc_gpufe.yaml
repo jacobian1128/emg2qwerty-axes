@@ -1,0 +1,22 @@
+# @package _global_
+# conformer_ctc + GPU front-end (log-spectrogram and aug2 SpecAugment computed on the batch on GPU).
+# Use with transforms=aug2_raw. Checkpoints are interchangeable with conformer_ctc (no extra state).
+module:
+  _target_: emg2qwerty.conformer.ConformerModule
+  in_features: 528
+  mlp_features: [384]
+  block_channels: [24, 24, 24, 24]
+  kernel_width: 31
+  frontend:
+    _target_: emg2qwerty.gpu_frontend.GPUFrontend
+    n_fft: 64
+    hop_length: 16
+    n_time_masks: 3
+    time_mask_param: 25
+    n_freq_masks: 2
+    freq_mask_param: 4
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
